@@ -45,12 +45,15 @@ def grads(m, b, xs, ys):
 
 # --- Train: batch gradient descent (same as train.h) ---
 def train(m, b, xs, ys, lr=LR, epochs=EPOCHS):
+    print()
+    print(f"{'epoch':>7}  {'loss':>10}  {'m':>10}  {'b':>10}")
+    print(f"{'-------':>7}  {'----------':>10}  {'----------':>10}  {'----------':>10}")
     for e in range(1, epochs + 1):
         gm, gb = grads(m, b, xs, ys)
         m -= lr * gm
         b -= lr * gb
         if e == 1 or e % 500 == 0:
-            print(f"ep {e} | loss {mse(m, b, xs, ys)} | m {m} | b {b}")
+            print(f"{e:7d}  {mse(m, b, xs, ys):10.6f}  {m:10.6f}  {b:10.6f}")
     return m, b
 
 
@@ -65,21 +68,30 @@ def sklearn_fit(xs, ys):
 def main():
     xs, ys = get_data()
 
-    print(f"start loss: {mse(INIT_M, INIT_B, xs, ys)}")
+    print("Gradient Descent (Python) -- fit yh = m*x + b")
+    print(f"Data:   n = {len(xs)}, xs = 1..8, ys ~= 2*x + 1")
+    print(f"Config: m0 = {INIT_M:g}, b0 = {INIT_B:g}, lr = {LR:g}, epochs = {EPOCHS}")
+    print(f"Start loss: {mse(INIT_M, INIT_B, xs, ys):.6f}")
+
     m, b = train(INIT_M, INIT_B, xs, ys, LR, EPOCHS)
-    print(f"final: m = {m}, b = {b}")
+
+    print("\nResult:")
+    print(f"  final loss : {mse(m, b, xs, ys):.6f}")
+    print(f"  final: m = {m:.6f}, b = {b:.6f}")
 
     xq = 10.0
-    print(f"fwd({xq}) = {fwd(xq, m, b)} (true ~21)")
+    print(f"  fwd({xq:g}) = {fwd(xq, m, b):.6f} (true ~21)")
 
     # Compare against sklearn's direct fit on the same data.
     sm, sb = sklearn_fit(xs, ys)
-    print(f"sklearn: m = {sm}, b = {sb}")
-    print(f"sklearn fwd({xq}) = {fwd(xq, sm, sb)} (true ~21)")
+    print("\nsklearn (LinearRegression, closed-form):")
+    print(f"  sklearn: m = {sm:.6f}, b = {sb:.6f}")
+    print(f"  sklearn fwd({xq:g}) = {fwd(xq, sm, sb):.6f} (true ~21)")
 
     dm, db = abs(m - sm), abs(b - sb)
     match = dm < TOL and db < TOL
-    print(f"match within tol={TOL}: {match} (|dm|={dm:.5f}, |db|={db:.5f})")
+    print(f"\nCheck (tol = {TOL}): |dm| = {dm:.6f}, |db| = {db:.6f} "
+          f"-> {'MATCH' if match else 'MISMATCH'}")
     return match
 
 

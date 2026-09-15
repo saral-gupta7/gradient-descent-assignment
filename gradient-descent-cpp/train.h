@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <iomanip>
 #include "model.h"
 #include "loss.h"
 using namespace std;
@@ -12,6 +13,17 @@ using namespace std;
 
 inline void train(Model& mo, const vector<double>& xs,
                   const vector<double>& ys, double lr, int ep) {
+    cout << fixed << setprecision(6);
+    cout << "\n"
+         << setw(7) << "epoch" << "  "
+         << setw(10) << "loss" << "  "
+         << setw(10) << "m" << "  "
+         << setw(10) << "b" << "\n";
+    cout << setw(7) << "-------" << "  "
+         << setw(10) << "----------" << "  "
+         << setw(10) << "----------" << "  "
+         << setw(10) << "----------" << "\n";
+
     for (int e = 1; e <= ep; e++) {
         double gm, gb;              // grads
         grads(mo, xs, ys, gm, gb);  // 1. fwd + 2. loss-grad
@@ -21,8 +33,10 @@ inline void train(Model& mo, const vector<double>& xs,
 
         if (e % 500 == 0 || e == 1) {
             double l = mse(mo, xs, ys);
-            cout << "ep " << e << " | loss " << l
-                      << " | m " << mo.m << " | b " << mo.b << "\n";
+            cout << setw(7) << e << "  "
+                 << setw(10) << l << "  "
+                 << setw(10) << mo.m << "  "
+                 << setw(10) << mo.b << "\n";
         }
     }
 }

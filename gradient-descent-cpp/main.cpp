@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include "model.h"
 #include "data.h"
@@ -17,13 +18,21 @@ int main() {
     double lr = 0.01; // 3. step size
     int ep = 2000;    // 4. passes over data
 
-    cout << "start loss: " << mse(mo, xs, ys) << "\n";
+    cout << "Gradient Descent (C++) -- fit yh = m*x + b\n";
+    cout << "Data:   n = " << xs.size() << ", xs = 1..8, ys ~= 2*x + 1\n";
+    cout << "Config: m0 = 0, b0 = 0, lr = " << lr << ", epochs = " << ep << "\n";
+    cout << "Start loss: " << fixed << setprecision(6) << mse(mo, xs, ys) << "\n";
+
     train(mo, xs, ys, lr, ep); // 5. gradient descent
-    cout << "final: m = " << mo.m << ", b = " << mo.b << "\n";
+
+    cout << "\nResult:\n";
+    cout << "  final loss : " << mse(mo, xs, ys) << "\n";
+    cout << "  final: m = " << mo.m << ", b = " << mo.b << "\n";
 
     // 6. forward feed on new x
     double xq = 10.0;
-    cout << "fwd(" << xq << ") = " << mo.fwd(xq)
-              << " (true ~21)\n";
+    cout.unsetf(ios::floatfield);
+    cout << "  fwd(" << xq << ") = " << fixed << setprecision(6)
+         << mo.fwd(xq) << " (true ~21)\n";
     return 0;
 }

@@ -193,12 +193,21 @@ g++ -std=c++17 -O2 -Wall main.cpp -o gd
 Expected output (loss falls, params converge):
 
 ```
-start loss: ~100+
-ep 1    | loss ... | m ... | b ...
-ep 500  | loss ... | m ~1.9 | b ~1.3
-ep 2000 | loss ~0.01 | m ~2.0 | b ~1.0
-final: m = 2.0x, b = 1.0x
-fwd(10) = ~21
+Gradient Descent (C++) -- fit yh = m*x + b
+Data:   n = 8, xs = 1..8, ys ~= 2*x + 1
+Config: m0 = 0, b0 = 0, lr = 0.01, epochs = 2000
+Start loss: 122.688750
+
+  epoch        loss           m           b
+-------  ----------  ----------  ----------
+      1   27.652182    1.117500    0.201750
+    500    0.008012    2.013890    1.005398
+   2000    0.006027    1.996472    1.103328
+
+Result:
+  final loss : 0.006027
+  final: m = 1.996472, b = 1.103328
+  fwd(10) = 21.068047 (true ~21)
 ```
 
 ---

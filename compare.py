@@ -45,18 +45,24 @@ def main():
     cpp_out = run_cpp()
     py_out = run_python()
 
-    print("===== C++ =====")
+    print("================ C++ ================")
     print(cpp_out.strip())
-    print("===== Python =====")
+    print("================ Python ================")
     print(py_out.strip())
 
     (cpp_m, cpp_b), _ = parse_params(cpp_out)
     (py_m, py_b), (sk_m, sk_b) = parse_params(py_out)
 
-    print("===== Comparison =====")
-    print(f"C++ GD:      m = {cpp_m}, b = {cpp_b}")
-    print(f"Python GD:   m = {py_m}, b = {py_b}")
-    print(f"Python sk:   m = {sk_m}, b = {sk_b}")
+    def fmt(v):
+        return f"{v:10.6f}" if v is not None else "       n/a"
+
+    print("\n================ Comparison ================")
+    print(f"  {'method':<10}  {'m':>10}  {'b':>10}")
+    print(f"  {'----------':<10}  {'----------':>10}  {'----------':>10}")
+    print(f"  {'C++ GD':<10}  {fmt(cpp_m)}  {fmt(cpp_b)}")
+    print(f"  {'Python GD':<10}  {fmt(py_m)}  {fmt(py_b)}")
+    print(f"  {'sklearn':<10}  {fmt(sk_m)}  {fmt(sk_b)}")
+    print()
 
     ok = True
     for name, a, b in [("m (C++ vs Py GD)", cpp_m, py_m),
@@ -64,16 +70,16 @@ def main():
                        ("m (Py GD vs sklearn)", py_m, sk_m),
                        ("b (Py GD vs sklearn)", py_b, sk_b)]:
         if a is None or b is None:
-            print(f"{name}: could not parse -> FAIL")
+            print(f"  {name:<22} could not parse -> FAIL")
             ok = False
         else:
             d = abs(a - b)
             status = "OK" if d < TOL else "FAIL"
             if d >= TOL:
                 ok = False
-            print(f"{name}: |diff| = {d:.5f} -> {status}")
+            print(f"  {name:<22} |diff| = {d:.6f} -> {status}")
 
-    print(f"MATCH: {ok} (tol = {TOL})")
+    print(f"\n  MATCH: {ok} (tol = {TOL})")
     raise SystemExit(0 if ok else 1)
 
 
