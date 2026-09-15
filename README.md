@@ -8,6 +8,7 @@ implemented twice on identical data + hyperparameters
 |---|---|
 | `gradient-descent-cpp/` | Original from-scratch C++ (loops only, no ML lib). `make run` to run. See `THEORY.md` / `PARAMS.md`. |
 | `gradient-descent-python/` | Same GD mirrored with numpy **plus** a direct `sklearn.LinearRegression` fit. Pip + isolated `.venv`. |
+| `neural-network-python/` | 1-2-2-1 forward pass ("First Pass" slide, all weights 0.5) with numpy **plus** a `sklearn MLPRegressor` cross-check. |
 
 ## Quick start
 
