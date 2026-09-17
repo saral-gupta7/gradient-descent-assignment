@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+
 using namespace std;
 
 // Data: tiny toy set, y = 2*x + 1 (with small noise)

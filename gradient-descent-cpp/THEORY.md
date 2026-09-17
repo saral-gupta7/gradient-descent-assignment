@@ -178,8 +178,8 @@ mo.fwd(10.0);       // 6. test forward feed on unseen x
 ```
 
 Theory link: `fwd(10)` should give `≈ 21` (since `2*10+1 = 21`).
-That single number proves generalization: the line works beyond
-the training points `1..8`.
+That number shows the model can extrapolate to `x = 10`. A single
+prediction without a measured target cannot prove generalization.
 
 ---
 
